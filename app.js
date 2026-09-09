@@ -8,6 +8,19 @@ const playStatus = document.getElementById('playStatus');
 const musicWave = document.getElementById('musicWave');
 const volume = document.getElementById('volume');
 let playPending = false;
+let waitingForGesture = false;
+
+function clearGestureFallback() {
+  waitingForGesture = false;
+  document.removeEventListener('click', playAfterGesture);
+  document.removeEventListener('keydown', playAfterGesture);
+}
+
+function playAfterGesture(event) {
+  if (!waitingForGesture || event.target.closest?.('a, button, input, select, textarea')) return;
+  if (event.type === 'keydown' && (event.repeat || !['Enter', ' '].includes(event.key))) return;
+  void startMusic();
+}
 
 function setPlaybackState(playing, message) {
   playIcon.toggleAttribute('hidden', playing);
@@ -20,23 +33,41 @@ function setPlaybackState(playing, message) {
 
 playButton.disabled = false;
 audio.volume = Number(volume.value) / 100;
-playButton.addEventListener('click', async () => {
+async function startMusic() {
   if (playPending) return;
-  if (!audio.paused) { audio.pause(); return; }
   playPending = true;
   playButton.setAttribute('aria-busy', 'true');
   playStatus.textContent = 'Cargando canción…';
   try {
     if (audio.error) audio.load();
     await audio.play();
-  } catch {
-    setPlaybackState(false, 'No se pudo reproducir. Pulsa para reintentar.');
+    if (!audio.paused) {
+      clearGestureFallback();
+      setPlaybackState(true, 'Reproduciendo');
+    }
+  } catch (error) {
+    if (error.name === 'NotAllowedError') {
+      waitingForGesture = true;
+      setPlaybackState(false, 'Toca la página o pulsa ▶ para escuchar');
+      document.addEventListener('click', playAfterGesture);
+      document.addEventListener('keydown', playAfterGesture);
+    } else {
+      clearGestureFallback();
+      setPlaybackState(false, 'No se pudo reproducir. Pulsa para reintentar.');
+    }
   } finally {
     playPending = false;
     playButton.removeAttribute('aria-busy');
   }
+}
+playButton.addEventListener('click', () => {
+  if (!audio.paused) { clearGestureFallback(); audio.pause(); return; }
+  void startMusic();
 });
-audio.addEventListener('playing', () => setPlaybackState(true, 'Reproduciendo'));
+audio.addEventListener('playing', () => {
+  clearGestureFallback();
+  setPlaybackState(true, 'Reproduciendo');
+});
 audio.addEventListener('pause', () => setPlaybackState(false, 'En pausa'));
 audio.addEventListener('waiting', () => {
   musicWave.classList.remove('playing');
@@ -47,6 +78,9 @@ volume.addEventListener('input', () => {
   audio.volume = Number(volume.value) / 100;
   volume.setAttribute('aria-valuetext', `${volume.value} %`);
 });
+
+// Audible autoplay depends on the visitor's browser policy. Keep a one-touch fallback.
+void startMusic();
 
 const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 const video = document.getElementById('backgroundVideo');

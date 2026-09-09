@@ -4,11 +4,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0a0a0c">
-  <meta name="description" content="anthonyami · Junior Developer. Owner de EVG Scripts, Head Mod en AuroraHub y certificado en Networking. Lima, Perú.">
+  <meta name="description" content="anthonyami · Junior Developer. Owner de EVG Scripts, admin en Synerox y certificado en Networking. Lima, Perú.">
   <title>anthonyami · EVG</title>
   <link rel="icon" href="assets/avatar-still.webp" type="image/webp">
   <link rel="stylesheet" href="styles.css">
   <script src="app.js" defer></script>
+  <script src="communities.js" defer></script>
 </head>
 <body>
   <div class="backdrop" aria-hidden="true">
@@ -39,14 +40,14 @@
       <div class="details">
         <section aria-labelledby="projectsHeading">
           <div class="section-heading"><h2 id="projectsHeading">Proyectos & comunidad</h2><span aria-hidden="true">01 /</span></div>
-          <a class="project project-primary" href="https://discord.gg/Dw9XxeMbwk" target="_blank" rel="noopener noreferrer" aria-label="EVG Scripts, abrir comunidad en Discord (nueva pestaña)">
+          <a class="project project-primary" href="https://discord.gg/jtVdZfaXu" target="_blank" rel="noopener noreferrer" aria-label="EVG Scripts, abrir comunidad en Discord (nueva pestaña)" aria-describedby="evgCounts">
             <span class="project-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="m8 6-6 6 6 6m8-12 6 6-6 6m-3-15-2 18"/></svg></span>
-            <span class="project-copy"><span class="project-title">EVG<span>Scripts</span></span><span class="project-role">Owner · Desarrollo de scripts</span></span>
+            <span class="project-copy"><span class="project-title">EVG<span>Scripts</span></span><span class="project-role">Owner · Desarrollo de scripts</span><span class="community-counts" id="evgCounts" aria-live="polite">Miembros en Discord</span></span>
             <span class="out-arrow" aria-hidden="true">↗</span>
           </a>
-          <a class="project" href="https://discord.gg/WMthzb5Dum" target="_blank" rel="noopener noreferrer" aria-label="AuroraHub, abrir comunidad en Discord (nueva pestaña)">
+          <a class="project" href="https://discord.gg/qDRcSUjdG" target="_blank" rel="noopener noreferrer" aria-label="Synerox, abrir comunidad en Discord (nueva pestaña)" aria-describedby="syneroxCounts">
             <span class="project-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 18H5l-3 3V7a3 3 0 0 1 3-3h11a3 3 0 0 1 3 3v1"/><path d="M11 10h8a3 3 0 0 1 3 3v8l-3-3h-8a3 3 0 0 1-3-3v-2a3 3 0 0 1 3-3Z"/></svg></span>
-            <span class="project-copy"><span class="project-title">AuroraHub</span><span class="project-role">Head Mod · Comunidad</span></span>
+            <span class="project-copy"><span class="project-title">Synerox</span><span class="project-role">Admin · Comunidad</span><span class="community-counts" id="syneroxCounts" aria-live="polite">Miembros en Discord</span></span>
             <span class="out-arrow" aria-hidden="true">↗</span>
           </a>
         </section>
@@ -74,8 +75,8 @@
           </button>
           <div class="track-info"><h2>Under Your Spell</h2><p>Snow Strippers</p></div>
         </div>
-        <div class="music-end"><span class="play-status" id="playStatus" role="status" aria-live="polite">Pulsa para escuchar</span><label class="volume"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m11 5-6 4H2v6h3l6 4ZM15 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/></svg><span class="sr-only">Volumen de la música</span><input id="volume" type="range" min="0" max="100" value="50" aria-valuetext="50 %"></label></div>
-        <audio id="audio" src="assets/track.mp3" preload="none" loop></audio>
+        <div class="music-end"><span class="play-status" id="playStatus" role="status" aria-live="polite">Preparando música…</span><label class="volume"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m11 5-6 4H2v6h3l6 4ZM15 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/></svg><span class="sr-only">Volumen de la música</span><input id="volume" type="range" min="0" max="100" value="50" aria-valuetext="50 %"></label></div>
+        <audio id="audio" src="assets/track.mp3" preload="metadata" loop></audio>
         <noscript><p>Activa JavaScript para usar los controles o <a href="assets/track.mp3">escucha la canción aquí</a>.</p></noscript>
       </section>
     </main>
