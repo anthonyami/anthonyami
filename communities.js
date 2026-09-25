@@ -5,7 +5,7 @@
     { id: 'evgCounts', code: 'jtVdZfaXu' },
     { id: 'syneroxCounts', code: 'qDRcSUjdG' },
   ];
-  const formatter = new Intl.NumberFormat('es-PE');
+  const formatter = new Intl.NumberFormat('en-US');
   const refreshMs = 5 * 60 * 1000;
   let lastAttempt = 0;
   let pending = false;
@@ -37,15 +37,15 @@
         throw new Error('Counts unavailable');
       }
       container.replaceChildren(
-        countLabel(members, members === 1 ? 'miembro' : 'miembros', 'member-dot'),
-        countLabel(online, 'en línea', 'online-dot'),
+        countLabel(members, members === 1 ? 'member' : 'members', 'member-dot'),
+        countLabel(online, 'online', 'online-dot'),
       );
       container.dataset.state = 'ready';
-      container.title = `Cifras aproximadas de Discord. Consultadas a las ${new Date().toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' })}.`;
+      container.title = `Approximate Discord counts. Updated at ${new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}.`;
     } catch {
-      container.textContent = 'Ver miembros en Discord';
+      container.textContent = 'View members on Discord';
       container.dataset.state = 'unavailable';
-      container.title = 'No se pudieron actualizar las cifras. Puedes abrir la invitación.';
+      container.title = 'Counts could not be updated. You can open the invite.';
     } finally {
       clearTimeout(timeout);
     }

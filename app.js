@@ -26,7 +26,7 @@ function setPlaybackState(playing, message) {
   playIcon.toggleAttribute('hidden', playing);
   pauseIcon.toggleAttribute('hidden', !playing);
   playButton.setAttribute('aria-pressed', String(playing));
-  playButton.setAttribute('aria-label', playing ? 'Pausar Under Your Spell' : 'Reproducir Under Your Spell');
+  playButton.setAttribute('aria-label', playing ? 'Pause Under Your Spell' : 'Play Under Your Spell');
   musicWave.classList.toggle('playing', playing);
   if (message) playStatus.textContent = message;
 }
@@ -37,23 +37,23 @@ async function startMusic() {
   if (playPending) return;
   playPending = true;
   playButton.setAttribute('aria-busy', 'true');
-  playStatus.textContent = 'Cargando canción…';
+  playStatus.textContent = 'Loading track…';
   try {
     if (audio.error) audio.load();
     await audio.play();
     if (!audio.paused) {
       clearGestureFallback();
-      setPlaybackState(true, 'Reproduciendo');
+      setPlaybackState(true, 'Playing');
     }
   } catch (error) {
     if (error.name === 'NotAllowedError') {
       waitingForGesture = true;
-      setPlaybackState(false, 'Toca la página o pulsa ▶ para escuchar');
+      setPlaybackState(false, 'Tap the page or press ▶ to listen');
       document.addEventListener('click', playAfterGesture);
       document.addEventListener('keydown', playAfterGesture);
     } else {
       clearGestureFallback();
-      setPlaybackState(false, 'No se pudo reproducir. Pulsa para reintentar.');
+      setPlaybackState(false, 'Could not play. Press ▶ to retry.');
     }
   } finally {
     playPending = false;
@@ -66,17 +66,17 @@ playButton.addEventListener('click', () => {
 });
 audio.addEventListener('playing', () => {
   clearGestureFallback();
-  setPlaybackState(true, 'Reproduciendo');
+  setPlaybackState(true, 'Playing');
 });
-audio.addEventListener('pause', () => setPlaybackState(false, 'En pausa'));
+audio.addEventListener('pause', () => setPlaybackState(false, 'Paused'));
 audio.addEventListener('waiting', () => {
   musicWave.classList.remove('playing');
-  playStatus.textContent = 'Cargando canción…';
+  playStatus.textContent = 'Loading track…';
 });
-audio.addEventListener('error', () => setPlaybackState(false, 'No se pudo cargar. Pulsa para reintentar.'));
+audio.addEventListener('error', () => setPlaybackState(false, 'Could not load. Press ▶ to retry.'));
 volume.addEventListener('input', () => {
   audio.volume = Number(volume.value) / 100;
-  volume.setAttribute('aria-valuetext', `${volume.value} %`);
+  volume.setAttribute('aria-valuetext', `${volume.value}%`);
 });
 
 // Audible autoplay depends on the visitor's browser policy. Keep a one-touch fallback.
@@ -93,8 +93,8 @@ let motionPaused = motionQuery.matches || Boolean(navigator.connection?.saveData
 function updateMotion() {
   document.body.classList.toggle('motion-paused', motionPaused);
   motionToggle.setAttribute('aria-pressed', String(motionPaused));
-  motionToggle.setAttribute('aria-label', motionPaused ? 'Activar animaciones' : 'Pausar animaciones');
-  motionLabel.textContent = motionPaused ? 'Activar animación' : 'Pausar animación';
+  motionToggle.setAttribute('aria-label', motionPaused ? 'Enable animations' : 'Pause animations');
+  motionLabel.textContent = motionPaused ? 'Enable animation' : 'Pause animation';
   stillAvatarSource.media = motionPaused ? 'all' : 'not all';
   avatar.src = motionPaused ? 'assets/avatar-still.webp' : 'assets/avatar.webp';
   if (motionPaused || document.hidden) { video.pause(); return; }
