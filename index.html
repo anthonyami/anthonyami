@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,8 +7,18 @@
   <meta name="description" content="anthonyami · Junior developer, owner of EVG Scripts and admin at Synerox. Networking certified. Based in Lima, Peru.">
   <title>anthonyami · EVG</title>
   <link rel="icon" href="assets/avatar-still.webp" type="image/webp">
+  <script>
+    try {
+      const savedTheme = localStorage.getItem('anthonyami-theme');
+      document.documentElement.dataset.theme = savedTheme === 'light' || savedTheme === 'dark'
+        ? savedTheme
+        : (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+    } catch (_) { /* Storage may be unavailable. */ }
+  </script>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="experience.css">
   <script src="app.js" defer></script>
+  <script src="experience.js" defer></script>
   <script src="communities.js" defer></script>
   <script src="typewriter.js" defer></script>
   <script src="views.js" defer></script>
@@ -20,7 +30,14 @@
   <div class="page">
     <header class="topbar">
       <a class="wordmark" href="#profile" aria-label="anthonyami, home"><span class="brand-dot"></span>anthonyami<span class="wordmark-slash">/</span><span class="wordmark-evg">EVG</span></a>
-      <button class="motion-toggle" id="motionToggle" type="button" aria-label="Pause animations" aria-pressed="false" hidden><span class="motion-indicator" aria-hidden="true"></span><span id="motionLabel">Pause animation</span></button>
+      <div class="topbar-actions">
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to light mode" aria-pressed="false"><span class="theme-icon" aria-hidden="true">☀</span><span id="themeLabel">Light mode</span></button>
+        <button class="motion-toggle" id="motionToggle" type="button" aria-label="Pause animations" aria-pressed="false" hidden><span class="motion-indicator" aria-hidden="true"></span><span id="motionLabel">Pause animation</span></button>
+      </div>
+      <aside class="local-clock" aria-label="Current time in Lima, Peru">
+        <span class="clock-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+        <span class="clock-copy"><span class="clock-heading">LOCAL TIME · LIMA</span><time id="localTime" class="clock-time">--:--:--</time><span id="localDate" class="clock-date">Lima, Peru</span></span>
+      </aside>
     </header>
 
     <main id="profile" class="profile-card">
