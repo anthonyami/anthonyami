@@ -7,20 +7,26 @@
 .profile-card{--tilt-x:0deg;--tilt-y:0deg;transform:perspective(1400px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));will-change:auto;transition:transform .45s ease,box-shadow .45s ease,background .35s,border-color .35s}
 .profile-card.is-tilting{will-change:transform;transition:box-shadow .25s ease,background .35s,border-color .35s;box-shadow:0 35px 110px #0007}
 
-.spotify-card{position:absolute;top:42px;right:32px;width:220px;padding:13px;border:1px solid #ffffff1c;border-radius:14px;background:#0f0f12e6;box-shadow:0 14px 32px #0004;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);overflow:hidden}
+.identity-hero{display:grid;grid-template-columns:176px minmax(0,1fr);align-items:start;gap:18px;margin-bottom:30px}
+.identity-hero .avatar-frame{margin-bottom:0}
+.spotify-card{position:relative;min-width:0;width:100%;padding:15px;border:1px solid #63424a;border-radius:18px;background:linear-gradient(145deg,#241a1e,#131316 66%);box-shadow:0 18px 42px #0005;overflow:hidden;isolation:isolate}
+.spotify-card:before{content:"";position:absolute;inset:0 0 auto;height:2px;background:linear-gradient(90deg,var(--red),#ff4c5300 80%)}
 .spotify-card [hidden]{display:none!important}
-.spotify-card-heading{display:flex;align-items:center;gap:7px;margin:0 1px 11px;color:#bdb5be;font:600 .62rem var(--mono);letter-spacing:.1em}
-.spotify-mark{display:grid;place-items:center;width:16px;height:16px;border-radius:50%;background:#1ed760;color:#0b1b10;font-size:.55rem;line-height:1}
-.spotify-live-dot{width:6px;height:6px;margin-left:auto;border-radius:50%;background:#6d686d}
-.spotify-card.is-live .spotify-live-dot{background:#1ed760;box-shadow:0 0 10px #1ed76099}
-.spotify-status{min-height:48px;margin:0;display:flex;align-items:center;color:#aba3ad;font-size:.76rem;line-height:1.4}
-.spotify-track{display:flex;align-items:center;gap:10px;min-width:0;margin-bottom:10px}
-.spotify-track img{flex:0 0 48px;width:48px;height:48px;object-fit:cover;border-radius:8px;background:#29282b}
-.spotify-track-copy{min-width:0;display:flex;flex-direction:column;gap:2px}
-.spotify-track-copy strong,.spotify-track-copy span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.spotify-track-copy strong{font-size:.82rem;line-height:1.3;color:#fff}
-.spotify-track-copy span{font-size:.7rem;color:#b6aeb8}
-.spotify-open{display:flex;align-items:center;justify-content:space-between;margin:9px 2px 0;color:#b8adb7;font-size:.68rem}.spotify-open:hover{color:#1ed760}
+.spotify-card-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:14px;color:#d6aeb7;font:700 .61rem/1.2 var(--mono);letter-spacing:.14em}
+.spotify-live-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 6px;border:1px solid #55cf7955;border-radius:100px;background:#1ed76013;color:#77e79a;font:700 .56rem/1 var(--mono);letter-spacing:.08em;visibility:hidden}
+.spotify-card.is-live .spotify-live-badge{visibility:visible}
+.spotify-live-dot{width:5px;height:5px;border-radius:50%;background:#42e77d;box-shadow:0 0 9px #42e77d99}
+.spotify-status{min-height:72px;margin:0;display:flex;align-items:center;color:#b9aeb8;font-size:.8rem;line-height:1.5}
+.spotify-track{display:flex;align-items:center;gap:12px;min-width:0}
+.spotify-cover-wrap{position:relative;display:grid;place-items:center;flex:0 0 72px;width:72px;height:72px;overflow:hidden;border:1px solid #ffffff25;border-radius:12px;background:linear-gradient(135deg,#54343d,#1e1a21);box-shadow:0 8px 22px #0005}
+.spotify-cover-wrap img{display:block;width:100%;height:100%;object-fit:cover}
+.spotify-cover-fallback{font-size:2rem;color:#d9a1ad}
+.spotify-track-copy{min-width:0;display:flex;flex-direction:column;gap:5px}
+.spotify-track-copy strong{font-size:.95rem;font-weight:750;line-height:1.2;letter-spacing:-.025em;color:#fff;overflow-wrap:anywhere}
+.spotify-track-copy span{font-size:.74rem;line-height:1.3;color:#bcb3bc;overflow-wrap:anywhere}
+.spotify-open{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:39px;margin-top:14px;padding:7px 8px 7px 11px;border:1px solid #ffffff21;border-radius:10px;background:#ffffff0a;color:#f3e9ec;font-size:.74rem;font-weight:650;transition:background .2s,border-color .2s,color .2s}
+.spotify-open:hover{background:#1ed7601c;border-color:#1ed76088;color:#dffff0}
+.spotify-open-arrow{display:grid;place-items:center;flex:0 0 24px;width:24px;height:24px;border-radius:7px;background:#1ed760;color:#0b1b10;font-size:.93rem;line-height:1}
 
 .local-clock{position:fixed;left:20px;bottom:20px;z-index:5;display:flex;align-items:center;gap:11px;min-width:196px;padding:12px 15px;border:1px solid #ffffff24;border-radius:19px;background:#17171bdc;color:var(--text);box-shadow:0 12px 35px #0005;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);pointer-events:none}
 .clock-icon{display:grid;place-items:center;flex:0 0 40px;height:40px;border:1px solid var(--border);border-radius:12px;color:var(--red);background:#ffffff0a}
@@ -40,10 +46,13 @@ html[data-theme="light"] .motion-toggle:hover{border-color:var(--red)}
 html[data-theme="light"] .brand-dot{box-shadow:0 0 16px #b72e4066}
 html[data-theme="light"] .profile-card{border-color:#ded5d3;background:linear-gradient(135deg,#fffdfb,#f9f5f3);box-shadow:0 24px 75px #5c3b4024}
 html[data-theme="light"] .profile-card.is-tilting{box-shadow:0 32px 90px #5c3b4035}
-html[data-theme="light"] .spotify-card{background:#fffdfbf2;border-color:#dfd4d4;box-shadow:0 14px 32px #5c3b4020}
-html[data-theme="light"] .spotify-card-heading,html[data-theme="light"] .spotify-status{color:#6b6069}
+html[data-theme="light"] .spotify-card{background:linear-gradient(145deg,#fffaf9,#f8f1f1);border-color:#dcbcc4;box-shadow:0 16px 36px #5c3b4024}
+html[data-theme="light"] .spotify-card-heading{color:#a34b5c}
+html[data-theme="light"] .spotify-status{color:#695a65}
 html[data-theme="light"] .spotify-track-copy strong{color:#271e25}
-html[data-theme="light"] .spotify-track-copy span,html[data-theme="light"] .spotify-open{color:#6d5c66}
+html[data-theme="light"] .spotify-track-copy span{color:#6d5c66}
+html[data-theme="light"] .spotify-open{background:#fff9f9;border-color:#e1cfd2;color:#4a3039}
+html[data-theme="light"] .spotify-open:hover{background:#eaf9ee;border-color:#66bd7c;color:#184a2a}
 html[data-theme="light"] .identity{background:radial-gradient(ellipse at 24% 13%,#efdadd,transparent 58%)}
 html[data-theme="light"] .avatar-frame{background:#fff;border-color:#ca9aa3;box-shadow:0 12px 32px #5c3b4025}
 html[data-theme="light"] .avatar-badge{border-color:#fffdfb;color:#fff}
@@ -76,8 +85,8 @@ html[data-theme="light"] .footer-separator{color:#a98d96}
 html[data-theme="light"] .local-clock{background:#fffdfbe8;color:var(--text);border-color:#e2dada;box-shadow:0 12px 35px #5c3b4024}
 html[data-theme="light"] .clock-icon{background:#f5eeee}
 
-@media(max-width:940px){.spotify-card{position:relative;top:auto;right:auto;width:min(100%,320px);margin:0 0 23px}}
-@media(max-width:700px){.topbar{align-items:center;flex-wrap:wrap}.wordmark{order:1}.topbar-actions{order:3;width:100%;justify-content:flex-start;gap:7px}.theme-toggle{padding:10px}.local-clock{order:2;position:static;left:auto;bottom:auto;z-index:auto;min-width:0;margin-left:auto;padding:8px 10px;border-radius:15px}.clock-icon{flex-basis:34px;height:34px}.clock-time{font-size:.9rem}.spotify-card{width:100%;max-width:340px;margin-top:-3px}}
+@media(max-width:1100px){.identity-hero{grid-template-columns:1fr;gap:22px}.spotify-card{max-width:360px}}
+@media(max-width:700px){.topbar{align-items:center;flex-wrap:wrap}.wordmark{order:1}.topbar-actions{order:3;width:100%;justify-content:flex-start;gap:7px}.theme-toggle{padding:10px}.local-clock{order:2;position:static;left:auto;bottom:auto;z-index:auto;min-width:0;margin-left:auto;padding:8px 10px;border-radius:15px}.clock-icon{flex-basis:34px;height:34px}.clock-time{font-size:.9rem}.identity-hero{gap:20px;margin-bottom:25px}.spotify-card{max-width:none}}
 @media(max-width:420px){.theme-toggle,.motion-toggle{font-size:.78rem}.clock-heading{font-size:.56rem}.clock-date{font-size:.6rem}}
 @media(prefers-reduced-motion:reduce){.profile-card,.profile-card.is-tilting{transform:none;transition:none;will-change:auto}}
 .motion-paused .profile-card,.motion-paused .profile-card.is-tilting{transform:none;will-change:auto}

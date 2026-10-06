@@ -7,6 +7,7 @@
   const status = document.getElementById('spotifyStatus');
   const current = document.getElementById('spotifyCurrent');
   const cover = document.getElementById('spotifyCover');
+  const coverFallback = document.getElementById('spotifyCoverFallback');
   const title = document.getElementById('spotifyTitle');
   const artist = document.getElementById('spotifyArtist');
   const link = document.getElementById('spotifyOpen');
@@ -21,15 +22,21 @@
   }
 
   function showTrack(track) {
-    title.textContent = track.title;
-    artist.textContent = track.artist;
+    if (title.textContent !== track.title) title.textContent = track.title;
+    if (artist.textContent !== track.artist) artist.textContent = track.artist;
     cover.hidden = !track.cover;
+    coverFallback.hidden = !!track.cover;
     if (track.cover && cover.src !== track.cover) cover.src = track.cover;
     link.href = `https://open.spotify.com/search/${encodeURIComponent(`${track.artist} ${track.title}`)}`;
     status.hidden = true;
     current.hidden = false;
     card.classList.add('is-live');
   }
+
+  cover.addEventListener('error', () => {
+    cover.hidden = true;
+    coverFallback.hidden = false;
+  });
 
   async function refresh() {
     if (document.hidden || refreshing) return;

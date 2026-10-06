@@ -43,21 +43,23 @@
 
     <main id="profile" class="profile-card">
       <section class="identity" aria-labelledby="profileName">
-        <div class="avatar-frame">
-          <picture>
-            <source id="stillAvatarSource" media="(prefers-reduced-motion: reduce)" srcset="assets/avatar-still.webp">
-            <img id="avatar" src="assets/avatar.webp" width="176" height="176" alt="anthonyami avatar" fetchpriority="high">
-          </picture>
-          <span class="avatar-badge" aria-hidden="true">EVG</span>
-        </div>
-        <section class="spotify-card" id="spotifyCard" aria-label="What I'm listening to on Spotify">
-          <div class="spotify-card-heading"><span class="spotify-mark" aria-hidden="true">●</span><span>LISTENING NOW</span><span class="spotify-live-dot" aria-hidden="true"></span></div>
-          <p class="spotify-status" id="spotifyStatus" role="status" aria-live="polite">Checking Last.fm…</p>
-          <div class="spotify-current" id="spotifyCurrent" aria-live="polite" hidden>
-            <div class="spotify-track"><img id="spotifyCover" width="48" height="48" alt="" loading="lazy"><div class="spotify-track-copy"><strong id="spotifyTitle"></strong><span id="spotifyArtist"></span></div></div>
-            <a class="spotify-open" id="spotifyOpen" target="_blank" rel="noopener noreferrer">Find on Spotify <span aria-hidden="true">↗</span></a>
+        <div class="identity-hero">
+          <div class="avatar-frame">
+            <picture>
+              <source id="stillAvatarSource" media="(prefers-reduced-motion: reduce)" srcset="assets/avatar-still.webp">
+              <img id="avatar" src="assets/avatar.webp" width="176" height="176" alt="anthonyami avatar" fetchpriority="high">
+            </picture>
+            <span class="avatar-badge" aria-hidden="true">EVG</span>
           </div>
-        </section>
+          <section class="spotify-card" id="spotifyCard" aria-label="What I'm listening to on Spotify">
+            <div class="spotify-card-heading"><span>NOW PLAYING</span><span class="spotify-live-badge"><span class="spotify-live-dot" aria-hidden="true"></span>LIVE</span></div>
+            <p class="spotify-status" id="spotifyStatus" role="status" aria-live="polite">Checking Last.fm…</p>
+            <div class="spotify-current" id="spotifyCurrent" aria-live="polite" hidden>
+              <div class="spotify-track"><span class="spotify-cover-wrap"><img id="spotifyCover" width="72" height="72" alt="" loading="lazy"><span class="spotify-cover-fallback" id="spotifyCoverFallback" aria-hidden="true" hidden>♫</span></span><div class="spotify-track-copy"><strong id="spotifyTitle"></strong><span id="spotifyArtist"></span></div></div>
+              <a class="spotify-open" id="spotifyOpen" target="_blank" rel="noopener noreferrer"><span>Find on Spotify</span><span class="spotify-open-arrow" aria-hidden="true">↗</span></a>
+            </div>
+          </section>
+        </div>
         <p class="eyebrow"><span></span>JUNIOR DEVELOPER</p>
         <h1 id="profileName"><span class="sr-only">anthonyami</span><span class="typewriter" id="nameTypewriter" aria-hidden="true"><span class="typewriter-reserve">anthonyami<span class="name-dot">.</span></span><span class="typewriter-output"><span id="typedName">anthonyami</span><span class="name-dot" id="typedDot">.</span><span class="typewriter-cursor"></span></span></span></h1>
         <p class="intro">Code, scripts<br> and community.</p>
