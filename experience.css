@@ -4,13 +4,17 @@
 .theme-toggle:hover{border-color:var(--red)}
 .theme-icon{font-size:1.05rem;line-height:1;color:var(--red)}
 
-.profile-card{--tilt-x:0deg;--tilt-y:0deg;transform:perspective(1400px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));will-change:auto;transition:transform .45s ease,box-shadow .45s ease,background .35s,border-color .35s}
+.profile-card{position:relative;isolation:isolate;--tilt-x:0deg;--tilt-y:0deg;transform:perspective(1400px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));will-change:auto;transition:transform .45s ease,box-shadow .45s ease,background .35s,border-color .35s}
 .profile-card.is-tilting{will-change:transform;transition:box-shadow .25s ease,background .35s,border-color .35s;box-shadow:0 35px 110px #0007}
+.identity:before{display:none}
+@property --edge-angle{syntax:"<angle>";inherits:false;initial-value:0deg}
+@keyframes orbit-edge{to{--edge-angle:360deg}}
+.profile-card:before,.spotify-card:before{content:"";position:absolute;inset:0;z-index:2;border-radius:inherit;padding:2px;pointer-events:none;background:conic-gradient(from var(--edge-angle),transparent 0deg,transparent 298deg,#ff4c5318 310deg,#ff4c5377 326deg,var(--red) 339deg,#ff9799 344deg,#ff4c5377 350deg,transparent 360deg);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);mask-composite:exclude;animation:orbit-edge 8s linear infinite}
 
 .identity-hero{display:grid;grid-template-columns:176px minmax(0,1fr);align-items:start;gap:18px;margin-bottom:30px}
 .identity-hero .avatar-frame{margin-bottom:0}
 .spotify-card{position:relative;min-width:0;width:100%;padding:15px;border:1px solid #63424a;border-radius:18px;background:linear-gradient(145deg,#241a1e,#131316 66%);box-shadow:0 18px 42px #0005;overflow:hidden;isolation:isolate}
-.spotify-card:before{content:"";position:absolute;inset:0 0 auto;height:2px;background:linear-gradient(90deg,var(--red),#ff4c5300 80%)}
+.spotify-card:before{padding:1.5px;animation-duration:6s;animation-direction:reverse}
 .spotify-card [hidden]{display:none!important}
 .spotify-card-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:14px;color:#d6aeb7;font:700 .61rem/1.2 var(--mono);letter-spacing:.14em}
 .spotify-live-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 6px;border:1px solid #55cf7955;border-radius:100px;background:#1ed76013;color:#77e79a;font:700 .56rem/1 var(--mono);letter-spacing:.08em;visibility:hidden}
@@ -90,3 +94,4 @@ html[data-theme="light"] .clock-icon{background:#f5eeee}
 @media(max-width:420px){.theme-toggle,.motion-toggle{font-size:.78rem}.clock-heading{font-size:.56rem}.clock-date{font-size:.6rem}}
 @media(prefers-reduced-motion:reduce){.profile-card,.profile-card.is-tilting{transform:none;transition:none;will-change:auto}}
 .motion-paused .profile-card,.motion-paused .profile-card.is-tilting{transform:none;will-change:auto}
+.motion-paused .profile-card:before,.motion-paused .spotify-card:before{animation:none}
