@@ -7,8 +7,30 @@ const pauseIcon = document.getElementById('pauseIcon');
 const playStatus = document.getElementById('playStatus');
 const musicWave = document.getElementById('musicWave');
 const volume = document.getElementById('volume');
+const musicSeek = document.getElementById('musicSeek');
+const musicElapsed = document.getElementById('musicElapsed');
+const musicDuration = document.getElementById('musicDuration');
 let playPending = false;
 let waitingForGesture = false;
+
+function formatMusicTime(seconds) {
+  if (!Number.isFinite(seconds) || seconds < 0) return '--:--';
+  const whole = Math.floor(seconds);
+  return `${Math.floor(whole / 60)}:${String(whole % 60).padStart(2, '0')}`;
+}
+
+function updateMusicProgress() {
+  const duration = Number.isFinite(audio.duration) ? audio.duration : 0;
+  const elapsed = Number.isFinite(audio.currentTime) ? audio.currentTime : 0;
+  const progress = duration ? Math.min(elapsed / duration * 100, 100) : 0;
+  musicSeek.disabled = !duration;
+  musicSeek.max = String(duration || 100);
+  musicSeek.value = String(Math.min(elapsed, duration));
+  musicSeek.style.setProperty('--seek-progress', `${progress}%`);
+  musicElapsed.textContent = formatMusicTime(elapsed);
+  musicDuration.textContent = formatMusicTime(duration);
+  musicSeek.setAttribute('aria-valuetext', `${formatMusicTime(elapsed)} of ${formatMusicTime(duration)}`);
+}
 
 function clearGestureFallback() {
   waitingForGesture = false;
@@ -74,10 +96,18 @@ audio.addEventListener('waiting', () => {
   playStatus.textContent = 'Loading track…';
 });
 audio.addEventListener('error', () => setPlaybackState(false, 'Could not load. Press ▶ to retry.'));
+audio.addEventListener('loadedmetadata', updateMusicProgress);
+audio.addEventListener('durationchange', updateMusicProgress);
+audio.addEventListener('timeupdate', updateMusicProgress);
+musicSeek.addEventListener('input', () => {
+  audio.currentTime = Number(musicSeek.value);
+  updateMusicProgress();
+});
 volume.addEventListener('input', () => {
   audio.volume = Number(volume.value) / 100;
   volume.setAttribute('aria-valuetext', `${volume.value}%`);
 });
+updateMusicProgress();
 
 // Audible autoplay depends on the visitor's browser policy. Keep a one-touch fallback.
 void startMusic();

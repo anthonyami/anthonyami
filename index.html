@@ -97,15 +97,17 @@
       </div>
 
       <section class="music-player" aria-label="Music player">
-        <div class="music-caption"><span class="music-wave" id="musicWave" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span>ON MY PLAYLIST</span></div>
-        <div class="track-group">
-          <button class="play-button" id="playButton" type="button" aria-label="Play Under Your Spell" aria-pressed="false" disabled>
-            <svg id="playIcon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7Z"/></svg>
-            <svg id="pauseIcon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" hidden><path d="M6 5h4v14H6zm8 0h4v14h-4z"/></svg>
-          </button>
+        <div class="player-art" aria-hidden="true"><img src="assets/under-your-spell-cover.png" width="88" height="88" alt="" loading="lazy"></div>
+        <div class="player-track">
+          <div class="music-caption"><span class="music-wave" id="musicWave" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span>ON MY PLAYLIST</span></div>
           <div class="track-info"><h2>Under Your Spell</h2><p>Snow Strippers</p></div>
         </div>
-        <div class="music-end"><span class="play-status" id="playStatus" role="status" aria-live="polite">Preparing music…</span><label class="volume"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m11 5-6 4H2v6h3l6 4ZM15 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/></svg><span class="sr-only">Music volume</span><input id="volume" type="range" min="0" max="100" value="50" aria-valuetext="50%"></label></div>
+        <div class="player-progress"><span class="play-status" id="playStatus" role="status" aria-live="polite">Preparing music…</span><input class="music-seek" id="musicSeek" type="range" min="0" max="100" value="0" step="0.1" aria-label="Song progress" aria-valuetext="0:00 of --:--" disabled><div class="player-times"><span id="musicElapsed">0:00</span><span id="musicDuration">--:--</span></div></div>
+        <button class="play-button" id="playButton" type="button" aria-label="Play Under Your Spell" aria-pressed="false" disabled>
+          <svg id="playIcon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7Z"/></svg>
+          <svg id="pauseIcon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" hidden><path d="M6 5h4v14H6zm8 0h4v14h-4z"/></svg>
+        </button>
+        <label class="volume"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m11 5-6 4H2v6h3l6 4ZM15 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/></svg><span class="sr-only">Music volume</span><input id="volume" type="range" min="0" max="100" value="50" aria-valuetext="50%"></label>
         <audio id="audio" src="assets/track.mp3" preload="metadata" loop></audio>
         <noscript><p>Enable JavaScript to use the controls, or <a href="assets/track.mp3">listen to the song here</a>.</p></noscript>
       </section>
