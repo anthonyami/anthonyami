@@ -4,10 +4,9 @@
   const name = 'anthonyami';
   const container = document.getElementById('nameTypewriter');
   const text = document.getElementById('typedName');
-  const dot = document.getElementById('typedDot');
   const motionButton = document.getElementById('motionToggle');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  if (!container || !text || !dot) return;
+  if (!container || !text) return;
 
   let timer;
   let length = name.length;
@@ -15,7 +14,6 @@
 
   function render() {
     text.textContent = name.slice(0, length);
-    dot.hidden = length !== name.length;
   }
 
   function isPaused() {

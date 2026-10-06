@@ -9,7 +9,7 @@
 .identity:before{display:none}
 @property --edge-angle{syntax:"<angle>";inherits:false;initial-value:0deg}
 @keyframes orbit-edge{to{--edge-angle:360deg}}
-.profile-card:before,.spotify-card:before{content:"";position:absolute;inset:0;z-index:2;border-radius:inherit;padding:2px;pointer-events:none;background:conic-gradient(from var(--edge-angle),transparent 0deg,transparent 298deg,#ff4c5318 310deg,#ff4c5377 326deg,var(--red) 339deg,#ff9799 344deg,#ff4c5377 350deg,transparent 360deg);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);mask-composite:exclude;animation:orbit-edge 8s linear infinite}
+.profile-card:before,.spotify-card:before{content:"";position:absolute;inset:0;z-index:2;border-radius:inherit;padding:2px;pointer-events:none;background:conic-gradient(from var(--edge-angle),transparent 0deg,transparent 298deg,var(--edge-faint,#ff4c5318) 310deg,var(--edge-mid,#ff4c5377) 326deg,var(--edge-bright,var(--red)) 339deg,var(--edge-highlight,#ff9799) 344deg,var(--edge-mid,#ff4c5377) 350deg,transparent 360deg);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);mask-composite:exclude;animation:orbit-edge 8s linear infinite}
 
 .identity-hero{display:grid;grid-template-columns:176px minmax(0,1fr);align-items:start;gap:18px;margin-bottom:30px}
 .identity-hero .avatar-frame{margin-bottom:0}
@@ -41,7 +41,7 @@
 .clock-time{font:700 1rem/1.35 var(--mono);font-variant-numeric:tabular-nums;letter-spacing:.02em}
 .clock-date{font-size:.68rem;color:var(--muted)}
 
-html[data-theme="light"]{color-scheme:light;--bg:#f6f3f0;--panel:#fffdfb;--border:#ded9d6;--text:#221f22;--muted:#675f67;--red:#b72e40}
+html[data-theme="light"]{color-scheme:light;--bg:#f6f3f0;--panel:#fffdfb;--border:#ded9d6;--text:#221f22;--muted:#675f67;--red:#b72e40;--edge-faint:#13111422;--edge-mid:#13111488;--edge-bright:#131114;--edge-highlight:#050405}
 html[data-theme="light"] body{background:var(--bg)}
 html[data-theme="light"] .backdrop{background:radial-gradient(circle at 12% 10%,#e8c9cf66,transparent 31%),radial-gradient(circle at 90% 85%,#eadbdc88,transparent 38%),#f6f3f0}
 html[data-theme="light"] .backdrop video,html[data-theme="light"] .backdrop:after{opacity:0}
