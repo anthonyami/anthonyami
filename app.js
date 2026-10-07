@@ -29,7 +29,7 @@ let activeLyricIndex = -2;
 
 // Timings adapted to the 4:03 recording from https://lrclib.net/api/get/19499703.
 const lyricCueTimes = [
-  0.02, 6.67, 10.0, 13.31, 19.52, 26.61, 29.88, 33.08, 36.55,
+  0, 6.67, 10.0, 13.31, 19.52, 26.61, 29.88, 33.08, 36.55,
   39.35, 45.79, 52.54, 59.11, 65.50, 72.15, 78.82, 85.42,
   105.94, 112.48, 118.84, 125.64, 132.29, 136.15, 139.01, 142.56,
   150.75, 151.85, 157.21, 158.86, 162.69, 165.58, 168.92,
@@ -213,9 +213,15 @@ async function loadLyrics() {
     lyricsCopy.textContent = 'Lyrics unavailable right now.';
   }
 }
-openLyrics.addEventListener('click', () => {
+function showLyrics() {
+  if (lyricsDialog.open) return;
   lyricsDialog.showModal();
   void loadLyrics().then(() => syncLyrics(true));
+}
+openLyrics.addEventListener('click', showLyrics);
+document.querySelector('.music-player').addEventListener('click', event => {
+  if (event.target.closest('.player-art, button, input, .volume')) return;
+  showLyrics();
 });
 closeLyrics.addEventListener('click', () => lyricsDialog.close());
 lyricsDialog.addEventListener('click', event => {
