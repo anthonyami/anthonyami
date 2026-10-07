@@ -10,8 +10,20 @@ const volume = document.getElementById('volume');
 const musicSeek = document.getElementById('musicSeek');
 const musicElapsed = document.getElementById('musicElapsed');
 const musicDuration = document.getElementById('musicDuration');
+const openLyrics = document.getElementById('openLyrics');
+const lyricsDialog = document.getElementById('lyricsDialog');
+const closeLyrics = document.getElementById('closeLyrics');
+const lyricsCopy = document.getElementById('lyricsCopy');
+const lyricsStatus = document.getElementById('lyricsStatus');
+const lyricsPlayButton = document.getElementById('lyricsPlayButton');
+const lyricsPlayIcon = document.getElementById('lyricsPlayIcon');
+const lyricsPauseIcon = document.getElementById('lyricsPauseIcon');
+const lyricsSeek = document.getElementById('lyricsSeek');
+const lyricsElapsed = document.getElementById('lyricsElapsed');
+const lyricsDuration = document.getElementById('lyricsDuration');
 let playPending = false;
 let waitingForGesture = false;
+let lyricsLoaded = false;
 
 function formatMusicTime(seconds) {
   if (!Number.isFinite(seconds) || seconds < 0) return '--:--';
@@ -23,13 +35,17 @@ function updateMusicProgress() {
   const duration = Number.isFinite(audio.duration) ? audio.duration : 0;
   const elapsed = Number.isFinite(audio.currentTime) ? audio.currentTime : 0;
   const progress = duration ? Math.min(elapsed / duration * 100, 100) : 0;
-  musicSeek.disabled = !duration;
-  musicSeek.max = String(duration || 100);
-  musicSeek.value = String(Math.min(elapsed, duration));
-  musicSeek.style.setProperty('--seek-progress', `${progress}%`);
+  for (const seek of [musicSeek, lyricsSeek]) {
+    seek.disabled = !duration;
+    seek.max = String(duration || 100);
+    seek.value = String(Math.min(elapsed, duration));
+    seek.style.setProperty('--seek-progress', `${progress}%`);
+    seek.setAttribute('aria-valuetext', `${formatMusicTime(elapsed)} of ${formatMusicTime(duration)}`);
+  }
   musicElapsed.textContent = formatMusicTime(elapsed);
   musicDuration.textContent = formatMusicTime(duration);
-  musicSeek.setAttribute('aria-valuetext', `${formatMusicTime(elapsed)} of ${formatMusicTime(duration)}`);
+  lyricsElapsed.textContent = musicElapsed.textContent;
+  lyricsDuration.textContent = musicDuration.textContent;
 }
 
 function clearGestureFallback() {
@@ -47,10 +63,17 @@ function playAfterGesture(event) {
 function setPlaybackState(playing, message) {
   playIcon.toggleAttribute('hidden', playing);
   pauseIcon.toggleAttribute('hidden', !playing);
+  lyricsPlayIcon.toggleAttribute('hidden', playing);
+  lyricsPauseIcon.toggleAttribute('hidden', !playing);
   playButton.setAttribute('aria-pressed', String(playing));
   playButton.setAttribute('aria-label', playing ? 'Pause Under Your Spell' : 'Play Under Your Spell');
+  lyricsPlayButton.setAttribute('aria-pressed', String(playing));
+  lyricsPlayButton.setAttribute('aria-label', playing ? 'Pause Under Your Spell' : 'Play Under Your Spell');
   musicWave.classList.toggle('playing', playing);
-  if (message) playStatus.textContent = message;
+  if (message) {
+    playStatus.textContent = message;
+    lyricsStatus.textContent = message;
+  }
 }
 
 playButton.disabled = false;
@@ -59,7 +82,9 @@ async function startMusic() {
   if (playPending) return;
   playPending = true;
   playButton.setAttribute('aria-busy', 'true');
+  lyricsPlayButton.setAttribute('aria-busy', 'true');
   playStatus.textContent = 'Loading track…';
+  lyricsStatus.textContent = 'Loading track…';
   try {
     if (audio.error) audio.load();
     await audio.play();
@@ -80,12 +105,15 @@ async function startMusic() {
   } finally {
     playPending = false;
     playButton.removeAttribute('aria-busy');
+    lyricsPlayButton.removeAttribute('aria-busy');
   }
 }
-playButton.addEventListener('click', () => {
+function toggleMusic() {
   if (!audio.paused) { clearGestureFallback(); audio.pause(); return; }
   void startMusic();
-});
+}
+playButton.addEventListener('click', toggleMusic);
+lyricsPlayButton.addEventListener('click', toggleMusic);
 audio.addEventListener('playing', () => {
   clearGestureFallback();
   setPlaybackState(true, 'Playing');
@@ -94,6 +122,7 @@ audio.addEventListener('pause', () => setPlaybackState(false, 'Paused'));
 audio.addEventListener('waiting', () => {
   musicWave.classList.remove('playing');
   playStatus.textContent = 'Loading track…';
+  lyricsStatus.textContent = 'Loading track…';
 });
 audio.addEventListener('error', () => setPlaybackState(false, 'Could not load. Press ▶ to retry.'));
 audio.addEventListener('loadedmetadata', updateMusicProgress);
@@ -103,11 +132,36 @@ musicSeek.addEventListener('input', () => {
   audio.currentTime = Number(musicSeek.value);
   updateMusicProgress();
 });
+lyricsSeek.addEventListener('input', () => {
+  audio.currentTime = Number(lyricsSeek.value);
+  updateMusicProgress();
+});
 volume.addEventListener('input', () => {
   audio.volume = Number(volume.value) / 100;
   volume.setAttribute('aria-valuetext', `${volume.value}%`);
 });
 updateMusicProgress();
+
+async function loadLyrics() {
+  if (lyricsLoaded) return;
+  try {
+    const response = await fetch('assets/under-your-spell-lyrics.txt');
+    if (!response.ok) throw new Error('Lyrics unavailable');
+    lyricsCopy.textContent = (await response.text()).trim();
+    lyricsLoaded = true;
+  } catch (_) {
+    lyricsCopy.textContent = 'Lyrics unavailable right now.';
+  }
+}
+openLyrics.addEventListener('click', () => {
+  lyricsDialog.showModal();
+  lyricsCopy.scrollTop = 0;
+  void loadLyrics();
+});
+closeLyrics.addEventListener('click', () => lyricsDialog.close());
+lyricsDialog.addEventListener('click', event => {
+  if (event.target === lyricsDialog) lyricsDialog.close();
+});
 
 // Audible autoplay depends on the visitor's browser policy. Keep a one-touch fallback.
 void startMusic();
