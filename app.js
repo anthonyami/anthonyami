@@ -24,11 +24,49 @@ const lyricsDuration = document.getElementById('lyricsDuration');
 let playPending = false;
 let waitingForGesture = false;
 let lyricsLoaded = false;
+let lyricLines = [];
+let activeLyricIndex = -2;
+
+// Timings adapted to the 4:03 recording from https://lrclib.net/api/get/19499703.
+const lyricCueTimes = [
+  0.02, 6.67, 10.0, 13.31, 19.52, 26.61, 29.88, 33.08, 36.55,
+  39.35, 45.79, 52.54, 59.11, 65.50, 72.15, 78.82, 85.42,
+  105.94, 112.48, 118.84, 125.64, 132.29, 136.15, 139.01, 142.56,
+  150.75, 151.85, 157.21, 158.86, 162.69, 165.58, 168.92,
+  183.82, 198.47, 201.94, 204.50, 205.31, 208.68
+];
 
 function formatMusicTime(seconds) {
   if (!Number.isFinite(seconds) || seconds < 0) return '--:--';
   const whole = Math.floor(seconds);
   return `${Math.floor(whole / 60)}:${String(whole % 60).padStart(2, '0')}`;
+}
+
+function syncLyrics(forceScroll = false) {
+  if (!lyricsLoaded || !lyricLines.length) return;
+  const time = audio.currentTime;
+  let nextIndex = -1;
+  for (let index = 0; index < lyricCueTimes.length; index++) {
+    if (time < lyricCueTimes[index]) break;
+    nextIndex = index;
+  }
+  if ((time >= 89.55 && time < 105.94) || time >= 211.53) nextIndex = -1;
+  if (nextIndex !== activeLyricIndex) {
+    lyricLines.forEach((line, index) => {
+      line.classList.toggle('is-active', index === nextIndex);
+      line.classList.toggle('is-past', index < nextIndex);
+      if (index === nextIndex) line.setAttribute('aria-current', 'true');
+      else line.removeAttribute('aria-current');
+    });
+    activeLyricIndex = nextIndex;
+  } else if (!forceScroll) return;
+  if (!lyricsDialog.open || nextIndex < 0) return;
+  const activeLine = lyricLines[nextIndex];
+  const target = activeLine.getBoundingClientRect().top - lyricsCopy.getBoundingClientRect().top
+    + lyricsCopy.scrollTop - lyricsCopy.clientHeight * .35;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    || document.body.classList.contains('motion-paused');
+  lyricsCopy.scrollTo({ top: Math.max(0, target), behavior: reduceMotion ? 'instant' : 'smooth' });
 }
 
 function updateMusicProgress() {
@@ -46,6 +84,7 @@ function updateMusicProgress() {
   musicDuration.textContent = formatMusicTime(duration);
   lyricsElapsed.textContent = musicElapsed.textContent;
   lyricsDuration.textContent = musicDuration.textContent;
+  syncLyrics();
 }
 
 function clearGestureFallback() {
@@ -128,13 +167,16 @@ audio.addEventListener('error', () => setPlaybackState(false, 'Could not load. P
 audio.addEventListener('loadedmetadata', updateMusicProgress);
 audio.addEventListener('durationchange', updateMusicProgress);
 audio.addEventListener('timeupdate', updateMusicProgress);
+audio.addEventListener('seeked', () => syncLyrics(true));
 musicSeek.addEventListener('input', () => {
   audio.currentTime = Number(musicSeek.value);
   updateMusicProgress();
+  syncLyrics(true);
 });
 lyricsSeek.addEventListener('input', () => {
   audio.currentTime = Number(lyricsSeek.value);
   updateMusicProgress();
+  syncLyrics(true);
 });
 volume.addEventListener('input', () => {
   audio.volume = Number(volume.value) / 100;
@@ -147,16 +189,33 @@ async function loadLyrics() {
   try {
     const response = await fetch('assets/under-your-spell-lyrics.txt');
     if (!response.ok) throw new Error('Lyrics unavailable');
-    lyricsCopy.textContent = (await response.text()).trim();
+    const text = (await response.text()).trim();
+    const fragment = document.createDocumentFragment();
+    const lines = [];
+    for (const content of text.split(/\r?\n/)) {
+      const line = document.createElement('div');
+      if (content.trim()) {
+        line.className = 'lyric-line';
+        line.textContent = content;
+        lines.push(line);
+      } else {
+        line.className = 'lyric-gap';
+        line.setAttribute('aria-hidden', 'true');
+      }
+      fragment.append(line);
+    }
+    if (lines.length !== lyricCueTimes.length) throw new Error('Lyric cue mismatch');
+    lyricsCopy.replaceChildren(fragment);
+    lyricLines = lines;
     lyricsLoaded = true;
+    syncLyrics(true);
   } catch (_) {
     lyricsCopy.textContent = 'Lyrics unavailable right now.';
   }
 }
 openLyrics.addEventListener('click', () => {
   lyricsDialog.showModal();
-  lyricsCopy.scrollTop = 0;
-  void loadLyrics();
+  void loadLyrics().then(() => syncLyrics(true));
 });
 closeLyrics.addEventListener('click', () => lyricsDialog.close());
 lyricsDialog.addEventListener('click', event => {
