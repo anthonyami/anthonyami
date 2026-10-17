@@ -2,8 +2,8 @@
 
 (() => {
   const communities = [
-    { id: 'evgCounts', code: 'jtVdZfaXu' },
-    { id: 'syneroxCounts', code: 'qDRcSUjdG' },
+    { id: 'evgCounts', code: 'EcHFD6QDCz' },
+    { id: 'syneroxCounts', code: '2JDSKUypcQ' },
   ];
   const formatter = new Intl.NumberFormat('en-US');
   const refreshMs = 5 * 60 * 1000;
