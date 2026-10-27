@@ -3,7 +3,7 @@
 (() => {
   const communities = [
     { id: 'evgCounts', code: 'EcHFD6QDCz' },
-    { id: 'syneroxCounts', code: '2JDSKUypcQ' },
+    { id: 'syneroxCounts', code: 'bB8GgTz5gU' },
   ];
   const formatter = new Intl.NumberFormat('en-US');
   const refreshMs = 5 * 60 * 1000;
