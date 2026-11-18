@@ -193,3 +193,10 @@ html[data-theme="light"] .music-seek::-moz-range-track{background:linear-gradien
 html[data-theme="light"] .project-rpd{background:linear-gradient(120deg,#f5eff9,#f9f5fa);border-color:#d5c5df}
 html[data-theme="light"] .project-rpd:hover{background:#f2e7fa;border-color:#ad87c7}
 @media(max-width:700px){.identity{border-bottom:0}}
+
+/* Balance the taller three-community column on desktop. */
+@media(min-width:701px){
+  .profile-card{grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr)}
+  .identity{display:flex;flex-direction:column;justify-content:center}
+  .details{justify-content:center}
+}
