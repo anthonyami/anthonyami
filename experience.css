@@ -200,3 +200,17 @@ html[data-theme="light"] .project-rpd:hover{background:#f2e7fa;border-color:#ad8
   .identity{display:flex;flex-direction:column;justify-content:center}
   .details{justify-content:center}
 }
+
+@media(min-width:1101px){
+  .profile-card{grid-template-areas:"identity projects" "skills social" "music music";grid-template-rows:auto auto auto}
+  .identity{grid-area:identity;justify-content:flex-start;padding-bottom:0}
+  .details{display:contents}
+  .details>section:first-child{grid-area:projects;padding:42px 36px 0}
+  .details>.skills-section{grid-area:skills;margin:0;padding:8px 42px 38px}
+  .details>.social-link{grid-area:social;align-self:stretch;min-height:78px;margin:8px 36px 38px;padding:16px 18px;border-radius:14px;background:#ffffff0a}
+  .music-player{grid-area:music}
+  html[data-theme="light"] .details>.social-link{background:#8d617010}
+}
+@media(min-width:701px){
+  .local-clock{position:static;left:auto;bottom:auto;min-width:196px;margin-left:auto}
+}
