@@ -4,6 +4,7 @@
   const communities = [
     { id: 'evgCounts', code: 'EcHFD6QDCz' },
     { id: 'syneroxCounts', code: 'bB8GgTz5gU' },
+    { id: 'rpdCounts', code: '825AdXYerW' },
   ];
   const formatter = new Intl.NumberFormat('en-US');
   const refreshMs = 5 * 60 * 1000;

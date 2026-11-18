@@ -177,3 +177,19 @@ html[data-theme="light"] .music-seek::-moz-range-track{background:linear-gradien
 @media(max-width:700px){.lyrics-dialog{width:calc(100vw - 18px);height:calc(100dvh - 18px);border-radius:19px}.lyrics-surface{padding:17px 18px 16px}.lyrics-header{margin-bottom:14px;padding-bottom:12px}.lyrics-layout{grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr);gap:14px}.lyrics-cover{width:min(39vw,145px);border-radius:13px}.lyrics-details{padding-top:0}.lyrics-details h2{margin-top:8px;font-size:clamp(1.9rem,8vw,2.8rem)}.lyrics-copy{margin-top:18px;padding-top:8px;font-size:1.22rem}.lyrics-controls{gap:9px;margin-top:10px;padding:10px 12px;border-radius:13px}.lyrics-play{flex-basis:42px;width:42px;height:42px}}
 @media(prefers-reduced-motion:reduce){.player-track,.lyrics-close,.lyric-line{transition:none}.lyrics-close:hover,.lyric-line.is-active{transform:none}}
 .motion-paused .player-track,.motion-paused .lyrics-close,.motion-paused .lyric-line{transition:none}
+
+/* Keep the community cards expressive without template-style guide marks. */
+.eyebrow{gap:0}
+.identity{border-right:0}
+.website-slot{border-top:0;padding-top:0}
+.skills li{border-bottom:0}
+.skills li+li{border-top:0}
+.music-player{border-top:0}
+.views-panel{border-top:0}
+.lyrics-header{border-bottom:0}
+.project-rpd{background:linear-gradient(120deg,#241a32,#19161f);border-color:#564069}
+.project-rpd:hover{background:#291d37;border-color:#9d73c4}
+.project-rpd .project-icon{border-color:#7f5899}
+html[data-theme="light"] .project-rpd{background:linear-gradient(120deg,#f5eff9,#f9f5fa);border-color:#d5c5df}
+html[data-theme="light"] .project-rpd:hover{background:#f2e7fa;border-color:#ad87c7}
+@media(max-width:700px){.identity{border-bottom:0}}
